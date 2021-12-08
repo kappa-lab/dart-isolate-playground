@@ -9,8 +9,8 @@ import (
 ------- print ------
 main
 workerRecieve :Init
+workerRecieve :Send 1
 workerRecieve :Send 2
-workerRecieve :Send 3
 end
 --------------------
 **/
@@ -20,14 +20,14 @@ func main() {
 	defer func() { fmt.Println("end") }()
 
 	ch := make(chan string)
-	go workerRecieve(ch)
+	go workerReciever(ch)
 	go workerSender(ch)
 
 	ch <- "Init"
 	time.Sleep(1 * time.Second)
 }
 
-func workerRecieve(ch chan string) {
+func workerReciever(ch chan string) {
 	for {
 		select {
 		case message := <-ch:
@@ -39,7 +39,7 @@ func workerRecieve(ch chan string) {
 
 func workerSender(ch chan string) {
 	time.Sleep(100 * time.Millisecond)
-	ch <- "Send 2"
+	ch <- "Send 1"
 	time.Sleep(100 * time.Millisecond)
-	ch <- "Send 3"
+	ch <- "Send 2"
 }
