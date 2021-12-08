@@ -21,10 +21,14 @@ void main() {
     if (port is SendPort) {
       port.send("Init");
       Isolate.spawn(workerSender, port);
+
+      sleep(Duration(seconds: 1));
+
+      //If receivePort dose not close, Process will not terminate.
+      receivePort.close();
+      print("end");
     }
   });
-
-  print("end");
 }
 
 //ReceivePort Can Not set argument.
