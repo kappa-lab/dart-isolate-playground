@@ -1,6 +1,19 @@
 import 'dart:io';
 import 'dart:isolate';
 
+/** ---------------------------
+{name: Taro}:450904456
+  rename {name: Jiro}: 450904456
+{name: Jiro}:450904456
+  rename {name: Sabro}: 701368836
+{name: Jiro}:450904456
+User(Taro): 640978175
+  rename User(Shiro): 640978175
+User(Shiro): 640978175
+  rename User(Goro): 108999121
+User(Shiro): 640978175
+------------------------------- */
+
 Map<String, String> m = Map()..["name"] = "Taro";
 
 class User {
@@ -17,11 +30,13 @@ void main() {
   print("$m:${m.hashCode}"); //{name: Taro}:
 
   toJiro(m);
-  print(m); //{name: Jiro}
+  print("$m:${m.hashCode}");
+  ; //{name: Jiro}
 
   Isolate.spawn(toSabro, m);
   sleep(Duration(milliseconds: 100));
-  print(m); //{name: Jiro}. Do not change Sabro! (hashCode Not equals)
+  print(
+      "$m:${m.hashCode}"); //{name: Jiro}. Do not change Sabro! (hashCode Not equals)
 
   // User Class
   var u = User();
