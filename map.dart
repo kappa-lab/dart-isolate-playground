@@ -2,16 +2,18 @@ import 'dart:io';
 import 'dart:isolate';
 
 /** ---------------------------
-{name: Taro}:321899608
-  rename {name: Jiro}: 321899608
-{name: Jiro}:321899608
-  rename {name: Sabro}: 755147931
-{name: Jiro}:321899608 ,Do not change Sabro! (hashCode Not equals)
-User(Taro): 680611458
-  rename User(Shiro): 680611458
-User(Shiro): 680611458
-  rename User(Goro): 482961406
-User(Shiro): 680611458 ,Do not change Goro! (hashCode Not equals)
+{name: Taro}:117765460
+  rename {name: Jiro}: 117765460
+{name: Jiro}:117765460
+  rename {name: Sabro}: 54522872
+{name: Jiro}:117765460 ,Do not change Sabro! (hashCode Not equals)
+User(Taro): 34171567
+  rename User(Shiro): 34171567
+User(Shiro): 34171567
+  User(Shiro): 893950694, Apply Shiro, but it is different object.
+  rename User(Goro): 893950694
+User(Goro): 893950694 ,Return Goro from isolate
+User(Shiro): 34171567 ,Do not change Goro! (hashCode Not equals)
 ------------------------------- */
 
 Map<String, String> m = Map()..["name"] = "Taro";
@@ -25,7 +27,7 @@ class User {
   }
 }
 
-void main() {
+void main() async {
   //Map
   print("$m:${m.hashCode}"); //{name: Taro}:
 
@@ -45,8 +47,11 @@ void main() {
   toShiro(u);
   print(u); //User(Shiro)
 
-  Isolate.spawn(toGoro, u);
-  sleep(Duration(milliseconds: 100));
+  final p = ReceivePort();
+  Isolate.spawn(toGoro, [u, p.sendPort]);
+  User res = await p.first as User;
+  print("$res ,Return Goro from isolate"); // Return Goro from isolate
+
   print(
       "$u ,Do not change Goro! (hashCode Not equals)"); //User(Shiro). Do not change Goro! (hashCode Not equals)
 }
@@ -66,7 +71,9 @@ void toShiro(User u) {
   print("  rename $u");
 }
 
-void toGoro(User u) {
-  u.name = "Goro";
-  print("  rename $u");
+void toGoro(List<dynamic> args) {
+  print("  ${args[0]}, Apply Shiro, but it is different object.");
+  (args[0] as User).name = "Goro";
+  print("  rename ${args[0]}");
+  Isolate.exit(args[1], args[0]);
 }
