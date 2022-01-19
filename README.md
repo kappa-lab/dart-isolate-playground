@@ -26,21 +26,25 @@ end
 
 ## Shared memory
 - isolate can not access shared memory
+  - Isolate can return object(is not copy). 
+  - However, Isolate caller can only pass copy objects to Isolate
 - goroutine can access shared memory
 
 ### Run and Output
 `$ dart map.dart`
 ```
-{name: Taro}:450904456
-  rename {name: Jiro}: 450904456
-{name: Jiro}:450904456
-  rename {name: Sabro}: 701368836
-{name: Jiro}:450904456
-User(Taro): 640978175
-  rename User(Shiro): 640978175
-User(Shiro): 640978175
-  rename User(Goro): 108999121
-User(Shiro): 640978175
+{name: Taro}:117765460
+  rename {name: Jiro}: 117765460
+{name: Jiro}:117765460
+  rename {name: Sabro}: 54522872
+{name: Jiro}:117765460 ,Do not change Sabro! (hashCode Not equals)
+User(Taro): 34171567
+  rename User(Shiro): 34171567
+User(Shiro): 34171567
+  User(Shiro): 893950694, Apply Shiro, but it is different object.
+  rename User(Goro): 893950694
+User(Goro): 893950694 ,Return Goro from isolate
+User(Shiro): 34171567 ,Do not change Goro! (hashCode Not equals)
 ```
 
 `$ go map.go`
