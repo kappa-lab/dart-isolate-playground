@@ -2,16 +2,16 @@ import 'dart:io';
 import 'dart:isolate';
 
 /** ---------------------------
-{name: Taro}:450904456
-  rename {name: Jiro}: 450904456
-{name: Jiro}:450904456
-  rename {name: Sabro}: 701368836
-{name: Jiro}:450904456
-User(Taro): 640978175
-  rename User(Shiro): 640978175
-User(Shiro): 640978175
-  rename User(Goro): 108999121
-User(Shiro): 640978175
+{name: Taro}:321899608
+  rename {name: Jiro}: 321899608
+{name: Jiro}:321899608
+  rename {name: Sabro}: 755147931
+{name: Jiro}:321899608 ,Do not change Sabro! (hashCode Not equals)
+User(Taro): 680611458
+  rename User(Shiro): 680611458
+User(Shiro): 680611458
+  rename User(Goro): 482961406
+User(Shiro): 680611458 ,Do not change Goro! (hashCode Not equals)
 ------------------------------- */
 
 Map<String, String> m = Map()..["name"] = "Taro";
@@ -36,7 +36,7 @@ void main() {
   Isolate.spawn(toSabro, m);
   sleep(Duration(milliseconds: 100));
   print(
-      "$m:${m.hashCode}"); //{name: Jiro}. Do not change Sabro! (hashCode Not equals)
+      "$m:${m.hashCode} ,Do not change Sabro! (hashCode Not equals)"); //{name: Jiro}. Do not change Sabro! (hashCode Not equals)
 
   // User Class
   var u = User();
@@ -47,7 +47,8 @@ void main() {
 
   Isolate.spawn(toGoro, u);
   sleep(Duration(milliseconds: 100));
-  print(u); //User(Shiro). Do not change Goro! (hashCode Not equals)
+  print(
+      "$u ,Do not change Goro! (hashCode Not equals)"); //User(Shiro). Do not change Goro! (hashCode Not equals)
 }
 
 void toJiro(Map<String, String> m) {
